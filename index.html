@@ -1,0 +1,38 @@
+    <?php
+// 检查$_POST中data键是否存在
+if (isset($_POST['data'])) {
+    $data = $_POST['data'];
+
+    // 保存到文件
+    $filename = 'events_received.json';
+    file_put_contents($filename, $data);
+
+    // 设置响应头
+    header('Content-Type: application/json');
+    
+    // 确保header函数在任何输出之前调用
+    ob_start(); // 启动输出缓冲
+
+    // 读取文件内容并输出
+    $fileContent = file_get_contents($filename);
+    echo $fileContent;
+
+    ob_end_flush(); // 结束输出缓冲并发送到浏览器
+} else {
+    // 如果data键不存在，可以返回错误信息或日志
+    http_response_code(400); // 设置HTTP状态码为400（Bad Request）
+    echo 'Error: Missing data in the POST request.';
+}
+?>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>WebCatX</title>
+	</head>
+	<body>
+		<h1>Hello World</h1>
+	</body>
+
+</html>
